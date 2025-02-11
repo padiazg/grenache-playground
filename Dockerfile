@@ -51,6 +51,6 @@ RUN apt update \
         nmap \
         curl \
         jq \
-    && npm i -g grenache-grape 
+    && npm i -g grenache-grape wscat
 
 ENTRYPOINT [ "bash" ]
