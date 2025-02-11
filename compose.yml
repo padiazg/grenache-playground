@@ -1,0 +1,42 @@
+name: microservices-test
+
+services:
+  grape-01:
+    image: grape:23-alpine
+    container_name: grape-01
+    entrypoint: grape
+    command: --dp 20001 --aph 30001 --bn 'grape-02:20001'
+    environment:
+      - DEBUG=*
+    # ports:
+    #   - "30001:30001"
+    networks:
+      - grape-network
+
+  grape-02:
+    image: grape:23-alpine
+    container_name: grape-02
+    entrypoint: grape
+    command: --dp 20001 --aph 30001 --bn 'grape-01:20001'
+    environment:
+      - DEBUG=*
+    # ports:
+    #   - "40001:30001"
+    networks:
+      - grape-network
+
+  fibonacci-worker-01:
+    image: grape:23-alpine
+    container_name: fibonacci-worker-01
+    entrypoint: node
+    command: /app/server.js
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=*
+    networks:
+      - grape-network
+
+networks:
+  grape-network:
+    driver: bridge
