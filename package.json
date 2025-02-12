@@ -12,6 +12,7 @@
   "type": "commonjs",
   "dependencies": {
     "grenache-nodejs-link": "^1.0.0",
-    "grenache-nodejs-ws": "^0.7.10"
+    "grenache-nodejs-ws": "^0.7.10",
+    "yargs": "^17.7.2"
   }
 }

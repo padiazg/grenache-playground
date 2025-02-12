@@ -10,9 +10,7 @@ function fibonacci (n) {
   return fibonacci(n - 1) + fibonacci(n - 2)
 }
 
-const link = new Link({
-  grape: 'http://grape-01:30001'
-})
+const link = new Link({ grape: 'http://grape-01:30001' })
 link.start()
 
 const peer = new PeerRPCServer(link, {})
@@ -22,12 +20,15 @@ const service = peer.transport('server')
 service.listen(_.random(1000) + 1024)
 
 link.announce('fibonacci_worker', service.port, {})
-setInterval(() => {
-  link.announce('fibonacci_worker', service.port, {})
-}, 100000)
+setInterval(() => { link.announce('fibonacci_worker', service.port, {}) }, 1000)
 
 service.on('request', (rid, key, payload, handler) => {
-  console.log(`request: ${payload}`);
+  console.log(`request: ${payload} number: ${payload.number}`);
+  if (!payload || !payload.number) {
+    console.log("No data found");
+    handler.reply(null, null);
+    return
+  }
   const result = fibonacci(payload.number);
   handler.reply(null, result);
 })
